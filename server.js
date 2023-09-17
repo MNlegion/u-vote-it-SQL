@@ -1,5 +1,6 @@
 const express = require("express");
 const mysql = require("mysql2");
+require("dotenv").config();
 const PORT = process.env.PORT || 3001;
 const app = express();
 
@@ -14,7 +15,7 @@ const db = mysql.createConnection(
   {
     host: "localhost",
     user: "root",
-    password: "0206192819891988!Baron",
+    password: process.env.DB_PASSWORD,
     database: "election",
   },
   console.log("Connected to the election database")
@@ -37,16 +38,16 @@ const db = mysql.createConnection(
 // });
 
 // CREATE SINGLE candidate
-const sql = `INSERT INTO candidates (id, first_name, last_name, industry_connected)
-            VALUES (?,?,?,?)`;
-const params = [1, 'Ronald', 'Firbank', 1];
+// const sql = `INSERT INTO candidates (id, first_name, last_name, industry_connected)
+//             VALUES (?,?,?,?)`;
+// const params = [1, 'Ronald', 'Firbank', 1];
 
-db.query(sql, params, (err, result) => {
-    if (err) {
-        console.log(err);
-    }
-    console.log(result);
-});
+// db.query(sql, params, (err, result) => {
+//     if (err) {
+//         console.log(err);
+//     }
+//     console.log(result);
+// });
 
 // db.query(`SELECT * FROM candidates`, (err, rows) => {
 //     console.log(rows);

@@ -120,7 +120,7 @@ app.get("/api/candidates", (req, res) => {
 
 // GET ALL parties
 
-app.get('/api/parties', (req, res) => {
+app.get("/api/parties", (req, res) => {
   const sql = `SELECT * FROM parties`;
 
   db.query(sql, (err, rows) => {
@@ -129,15 +129,15 @@ app.get('/api/parties', (req, res) => {
       return;
     }
     res.json({
-      message: 'success',
-      data: rows
+      message: "success",
+      data: rows,
     });
   });
 });
 
 // GET SINGLE party
-app.get('/api/party/:id', (req, res) => {
-  const sql = 'SELECT * FROM parties WHERE id = ?';
+app.get("/api/party/:id", (req, res) => {
+  const sql = "SELECT * FROM parties WHERE id = ?";
   const params = [req.params.id];
 
   db.query(sql, params, (err, row) => {
@@ -146,39 +146,46 @@ app.get('/api/party/:id', (req, res) => {
       return;
     }
     res.json({
-      message: 'succes',
-      data: row
+      message: "succes",
+      data: row,
     });
   });
 });
 
 // DELETE SINGLE party
-app.delete('/api/party/:id', (req, res) => {
+app.delete("/api/party/:id", (req, res) => {
   const sql = `DELETE FROM parties WHERE id = ?`;
   const params = [req.params.id];
 
   db.query(sql, params, (err, results) => {
     if (err) {
-      res.status(400).json({ error: err.message});
+      res.status(400).json({ error: err.message });
       // checks to see if anything was deleted
     } else if (!result.affectedRows) {
       res.json({
-        message: 'Party Not Found'
+        message: "Party Not Found",
       });
     } else {
       res.json({
-        message: 'deleted',
+        message: "deleted",
         changes: result.affectedRows,
-        id: req.params.id
+        id: req.params.id,
       });
     }
   });
 });
 
-// PUT SINGLE candidate party 
+// PUT SINGLE candidate party
 
 // Update a candidate's party
-app.put('/api/candidate/:id', (req, res) => {
+app.put("/api/candidate/:id", (req, res) => {
+  const errors = inputCheck(req.body, "party_id");
+
+  if (errors) {
+    res.status(400).json({ error: errors });
+    return;
+  }
+
   const sql = `UPDATE candidates SET party_id = ? 
                WHERE id = ?`;
   const params = [req.body.party_id, req.params.id];
@@ -188,13 +195,13 @@ app.put('/api/candidate/:id', (req, res) => {
       // check if a record was found
     } else if (!result.affectedRows) {
       res.json({
-        message: 'Candidate not found'
+        message: "Candidate not found",
       });
     } else {
       res.json({
-        message: 'success',
+        message: "success",
         data: req.body,
-        changes: result.affectedRows
+        changes: result.affectedRows,
       });
     }
   });

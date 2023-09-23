@@ -176,8 +176,6 @@ app.delete("/api/party/:id", (req, res) => {
 });
 
 // PUT SINGLE candidate party
-
-// Update a candidate's party
 app.put("/api/candidate/:id", (req, res) => {
   const errors = inputCheck(req.body, "party_id");
 
